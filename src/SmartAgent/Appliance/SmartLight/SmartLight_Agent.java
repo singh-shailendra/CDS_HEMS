@@ -21,7 +21,7 @@ public class SmartLight_Agent extends Agent {
 	public void setup() {
 		DFAgentDescription dfd = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();   
-		sd.setType("Smart_Light_Agent"); 
+		sd.setType("SmartLight_Agent"); 
 		sd.setName(getName());
 		sd.setOwnership("Project_Group_5");
 		dfd.setName(getAID());
