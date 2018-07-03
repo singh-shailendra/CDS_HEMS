@@ -18,6 +18,7 @@ public class UoTReceiver extends CyclicBehaviour{
 	}
 	@Override
 	public void action() {
+		System.out.println("UoT receiver is running ....");
 		// TODO Auto-generated method stub
 		ACLMessage msg = myAgent.receive(mt);
 		if(msg!=null) {

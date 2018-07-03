@@ -12,6 +12,7 @@ public class Data_Analysis_Agent extends Agent{
 	private ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
 	@Override
 	public void setup() {
+		
 		// Registration with the DF 
 		DFAgentDescription dfd = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();   

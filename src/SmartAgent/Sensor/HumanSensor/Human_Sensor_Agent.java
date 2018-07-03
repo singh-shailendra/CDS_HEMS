@@ -57,14 +57,13 @@ public class Human_Sensor_Agent extends Agent {
 		new Thread(()->{
 //			Thread.currentThread().setName("sensor");
 			while(threadFlag) {
-				System.out.println("sensor running...");
+//				System.out.println("sensor running...");
 				try {
 					
-					Thread.currentThread().sleep(5000);
-					if(new Random().nextBoolean()) {
+					Thread.currentThread().sleep(10000);
+					if(Math.random()>0.1) {
 						presence = (presence == false?true:false);
 						this.infoTrigger();
-						System.out.println("Trigger events");
 					}
 					else {
 						System.out.println("trigger fail");
@@ -79,6 +78,7 @@ public class Human_Sensor_Agent extends Agent {
 		}).start();
 	}
 	protected void infoTrigger() {
+		System.out.println("human detected");
 		addBehaviour(new InfoSender(this, presence));
 		
 	}

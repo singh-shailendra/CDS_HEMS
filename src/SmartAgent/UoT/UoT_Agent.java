@@ -10,13 +10,21 @@ private Boolean flag = true;
 	@Override
 	protected void setup() {
 		// TODO Auto-generated method stub
+		
 		eventTrigger();
 	}
 	
 	public void eventTrigger() {
 		new Thread(()-> {
 			while(flag) {
-				if(Math.random()>0.8) {
+				try {
+					Thread.currentThread().sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(Math.random()>0.5) {
+					System.out.println("UoT change");
 					this.addBehaviour(new OneShotBehaviour() {
 						
 						@Override
@@ -32,7 +40,7 @@ private Boolean flag = true;
 					});
 				}
 			}
-		});
+		}).start();
 	}
 	
 	@Override

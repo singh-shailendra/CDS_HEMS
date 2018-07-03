@@ -13,7 +13,8 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class SensorReceiver extends CyclicBehaviour{
-	MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+	MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM)
+										.MatchOntology("sensor");
 	public SensorReceiver(Agent a) {
 		// TODO Auto-generated constructor stub
 		super(a);
@@ -27,10 +28,10 @@ public class SensorReceiver extends CyclicBehaviour{
 		ServiceDescription sd = new ServiceDescription();
 		
 		ACLMessage msg = myAgent.receive(mt);
-		String recver = msg.getInReplyTo();
+		
 	
 		if(msg != null) {
-			
+			String recver = msg.getInReplyTo();
 			ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
 			request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 			if(recver.equals("human")) {
@@ -44,7 +45,7 @@ public class SensorReceiver extends CyclicBehaviour{
 							System.out.println("human detected");
 							request.addReceiver(aid);
 							request.setContent(msg.getContent());
-							request.setLanguage("low");
+							request.setLanguage("mid");
 							myAgent.send(request);
 							}
 						});

@@ -21,22 +21,23 @@ public class InfoSender extends OneShotBehaviour {
 
 	@Override
 	public void action() {
-		System.out.println("sending message" + pre.toString());
+		System.out.println("sending message " + pre.toString());
 		// TODO Auto-generated method stub
 		
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
 //		sd.setType("Data_Analysis_Agent");
-		sd.setType("Human_Sensor_Agent");
+		sd.setType("Data_Analysis_Agent");
 		template.addServices(sd);
 		
 		try {
 			AID aid = DFService.search(myAgent, template)[0].getName();
 			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 			msg.addReceiver(aid);
-			msg.setOntology("test");
-			msg.setLanguage("english");
-			msg.setContent(pre.toString());
+			msg.setOntology("sensor");
+			msg.setInReplyTo("human");
+//			msg.setLanguage("mid");
+			msg.setContent(pre?"on":"off");
 			myAgent.send(msg);
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
