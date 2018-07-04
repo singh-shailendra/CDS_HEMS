@@ -60,50 +60,24 @@ public class SensorReceiver extends CyclicBehaviour {
 			request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
 			request.setOntology("da");
 			if (recver.equals("human")) {
-				// System.out.println("human");
+				// human events
 				AID[] aids = this.getAID("SmartLight_Agent");
 				for (AID aid : aids) {
 
 					try {
 						Thread.currentThread().sleep(3000);
+						myAgent.addBehaviour(new HumanResponder(myAgent, aid, msg, request));
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					myAgent.addBehaviour(new OneShotBehaviour() {
-						@Override
-						public void action() {
-							System.out.println("sending operation to light");
 
-							
-							request.addReceiver(aid);
-							request.setContent(msg.getContent());
-							request.setLanguage("mid");
-							myAgent.send(request);
-							request.clearAllReceiver();
-
-						}
-					});
 				}
 
 			} else if (recver.equals("climate")) {
-				myAgent.addBehaviour(new OneShotBehaviour() {
-					@Override
-					public void action() {
-						// TODO Auto-generated method stub
-						System.out.println("climate detected");
-
-					}
-				});
-			} else {
-				myAgent.addBehaviour(new OneShotBehaviour() {
-					@Override
-					public void action() {
-						// TODO Auto-generated method stub
-						System.out.println("weather detected");
-					}
-				});
-			}
+				// climate events
+				myAgent.addBehaviour(new ClimateResponder(myAgent));
+			} 
 		} else {
 			block();
 		}

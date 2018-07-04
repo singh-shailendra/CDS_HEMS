@@ -22,6 +22,11 @@ public class Executor extends CyclicBehaviour{
 			if(msg.getContent().equals("on")) {
 				System.out.println(myAgent.getLocalName()+" light is successfully turned on");
 				System.out.println(myAgent.getLocalName()+" light is running on " +msg.getLanguage()+" mode");
+				SmartLight_Agent.mode = msg.getLanguage();
+				if(msg.getEncoding().equals("overbudget")) {
+					myAgent.addBehaviour(new Optimizer(myAgent));
+//					System.out.println("optimizer");
+				}
 			}
 			else {
 				System.out.println(myAgent.getLocalName()+" light is successfully turned off");

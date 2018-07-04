@@ -13,10 +13,8 @@ import jade.lang.acl.MessageTemplate;
 
 public class SmartLight_Agent extends Agent {
 	private ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
-	private static final String low = "low";
-	private static final String mid = "mid";
-	private static final String high = "high";
-	private static String mode = mid;
+
+	public static String mode = "mid";
 
 	@Override
 	public void setup() {
@@ -25,13 +23,13 @@ public class SmartLight_Agent extends Agent {
 		ServiceDescription sd = new ServiceDescription();
 		sd.setType("SmartLight_Agent");
 		sd.setName("JADE-SmartLight-Agent");
-		// sd.setOwnership("Project_Group_5");
-		
+		sd.setOwnership("Project_Group_5");
+
 		dfd.addServices(sd);
 
 		try {
 			DFService.register(this, dfd);
-			System.out.println(getName()+" registed");
+			System.out.println(getName() + " registed");
 			addBehaviour(tbf.wrap(new Executor(this)));
 
 		} catch (FIPAException e) {
@@ -47,7 +45,7 @@ public class SmartLight_Agent extends Agent {
 		try {
 			tbf.interrupt();
 			DFService.deregister(this);
-			
+
 		} catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
