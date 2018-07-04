@@ -12,40 +12,47 @@ import jade.lang.acl.ACLMessage;
 public class InfoSender extends OneShotBehaviour {
 	private Integer state = 0;
 	private Boolean pre;
-	
+	private DFAgentDescription template = new DFAgentDescription();
+	private ServiceDescription sd = new ServiceDescription();
+	private AID aid;
 
 	public InfoSender(Agent a, Boolean pre) {
 		super(a);
+
+//		recvSet();
 		this.pre = pre;
 	}
 
-	@Override
-	public void action() {
-		System.out.println("sending message " + pre.toString());
-		// TODO Auto-generated method stub
-		
-		DFAgentDescription template = new DFAgentDescription();
-		ServiceDescription sd = new ServiceDescription();
-//		sd.setType("Data_Analysis_Agent");
-		sd.setType("Data_Analysis_Agent");
-		template.addServices(sd);
-		
+	public void recvSet() {
+
 		try {
-			AID aid = DFService.search(myAgent, template)[0].getName();
-			ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-			msg.addReceiver(aid);
-			msg.setOntology("sensor");
-			msg.setInReplyTo("human");
-//			msg.setLanguage("mid");
-			msg.setContent(pre?"on":"off");
-			myAgent.send(msg);
+			sd.setType("Data_Analysis_Agent");
+			template.addServices(sd);
+			this.aid = DFService.search(myAgent, template)[0].getName();
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
-		
-		
+	}
+
+	@Override
+	public void action() {
+
+		// TODO Auto-generated method stub
+
+		// sd.setType("Data_Analysis_Agent");
+
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		msg.addReceiver(new AID("da", AID.ISLOCALNAME));
+		msg.setOntology("sensor");
+		msg.setInReplyTo("human");
+		// msg.setLanguage("mid");
+		msg.setContent(pre ? "on" : "off");
+		myAgent.send(msg);
+
+		// MessageTemplate mt =
+		// MessageTemplate.MatchPerformative(ACLMessage.CFP);
+
 	}
 
 }

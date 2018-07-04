@@ -1,7 +1,9 @@
 package SmartAgent.DataAnalysis;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.ThreadedBehaviourFactory;
+import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -10,6 +12,11 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 public class Data_Analysis_Agent extends Agent{
 	
 	private ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
+	public AID [] lights = {
+			new AID("sl1",AID.ISLOCALNAME),
+			new AID("sl2",AID.ISLOCALNAME)
+	};
+	public AID ac = new AID("ac", AID.ISLOCALNAME);
 	@Override
 	public void setup() {
 		
@@ -21,10 +28,9 @@ public class Data_Analysis_Agent extends Agent{
 		sd.setOwnership("Project_Group_5");
 		dfd.setName(getAID());
 		dfd.addServices(sd);
-		
 		addBehaviour(tbf.wrap(new SensorReceiver(this))); //responder for sensor
 		
-//		addBehaviour(tbf.wrap(new AppReceiver(this)));
+		addBehaviour(tbf.wrap(new AppReceiver(this)));
 		
 		addBehaviour(tbf.wrap(new UoTReceiver(this)));
 		
@@ -36,5 +42,17 @@ public class Data_Analysis_Agent extends Agent{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void predict(){
+		
+	}
+	
+	public void solutin(){
+		
+	}
+	
+	public AID[] getLights(){
+		return lights;
 	}
 }

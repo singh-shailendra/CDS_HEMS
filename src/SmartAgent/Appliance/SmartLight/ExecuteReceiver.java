@@ -26,36 +26,36 @@ public class ExecuteReceiver extends AchieveREResponder{
 	
 	protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
 		System.out.println("Agent "+myAgent.getLocalName()+": REQUEST received from "+request.getSender().getName()+". Action is "+request.getContent());
-		if (checkAction()) {
+//		if (checkAction()) {
 			System.out.println("Agent "+myAgent.getLocalName()+": Agree");
 			ACLMessage agree = request.createReply();
 			agree.setPerformative(ACLMessage.AGREE);
 			return agree;
-		}
-		else {
-			// We refuse to perform the action
-			System.out.println("Agent "+myAgent.getLocalName()+": Refuse");
-			throw new RefuseException("check-failed");
-		}
+//		}
+//		else {
+//			// We refuse to perform the action
+//			System.out.println("Agent "+myAgent.getLocalName()+": Refuse");
+//			throw new RefuseException("check-failed");
+//		}
 	}
 	
 	protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
-		if (performAction()) {
+//		if (performAction()) {
 			if(request.getContent().equals("on")) {
-				System.out.println("light is successfully turned on");
-				System.out.println("light is running on " +request.getLanguage()+" mode");
+				System.out.println(myAgent.getLocalName()+" light is successfully turned on");
+				System.out.println(myAgent.getLocalName()+" light is running on " +request.getLanguage()+" mode");
 			}
 			else {
-				System.out.println("light is successfully turned off");
+				System.out.println(myAgent.getLocalName()+" light is successfully turned off");
 			}
 			ACLMessage inform = request.createReply();
 			inform.setPerformative(ACLMessage.INFORM);
 			return inform;
-		}
-		else {
-			System.out.println("Agent "+myAgent.getLocalName()+": Action failed");
-			throw new FailureException("unexpected-error");
-		}
+//		}
+//		else {
+//			System.out.println("Agent "+myAgent.getLocalName()+": Action failed");
+//			throw new FailureException("unexpected-error");
+//		}
 
 	}
 	

@@ -12,77 +12,94 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class SensorReceiver extends CyclicBehaviour{
-	MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM)
-										.MatchOntology("sensor");
-	public SensorReceiver(Agent a) {
+public class SensorReceiver extends CyclicBehaviour {
+	private MessageTemplate mt = MessageTemplate.MatchPerformative(
+			ACLMessage.INFORM).MatchOntology("sensor");
+	Data_Analysis_Agent a;
+	public AID [] lights = {
+			new AID("sl1",AID.ISLOCALNAME),
+			new AID("sl2",AID.ISLOCALNAME)
+	};
+	public AID ac = new AID("ac", AID.ISLOCALNAME);
+	public SensorReceiver(Data_Analysis_Agent a) {
+		
 		// TODO Auto-generated constructor stub
-		super(a);
-	}
-	@Override
-	public void action() {
+		a = a;
+		
+		
 		System.out.println("sensor receiver is running...");
-		AID aid;
-		// TODO Auto-generated method stub
+	}
+  
+	public AID[] getAID(String type) {
 		DFAgentDescription template = new DFAgentDescription();
 		ServiceDescription sd = new ServiceDescription();
+		AID[] aids = null;
+		sd.setType(type);
+		template.addServices(sd);
 		
+
+		try {
+			DFAgentDescription[] result = DFService.search(myAgent, template);
+			aids = new AID[result.length];
+			for (int i = 0; i < result.length; ++i) {
+				aids[i] = result[i].getName();
+			}
+		} catch (FIPAException fe) {
+			fe.printStackTrace();
+		}
+		return aids;
+	}
+
+	@Override
+	public void action() {
+		
+		// TODO Auto-generated method stub
+
 		ACLMessage msg = myAgent.receive(mt);
-		
-	
-		if(msg != null) {
+
+		if (msg != null) {
 			String recver = msg.getInReplyTo();
 			ACLMessage request = new ACLMessage(ACLMessage.REQUEST);
 			request.setProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST);
-			if(recver.equals("human")) {
-				sd.setType("SmartLight_Agent");
-				template.addServices(sd);
-				try {
-					aid = DFService.search(myAgent, template)[0].getName();
-					myAgent.addBehaviour(new OneShotBehaviour() {
-						@Override
-						public void action() {
-							System.out.println("human detected");
+			request.setOntology("da");
+			
+			if (recver.equals("human")) {
+//				AID[] aids = this.getAID("SmartLight_Agent");
+				a.addBehaviour(new OneShotBehaviour() {
+					@Override
+					public void action() {
+						System.out.println("sending operation to light");
+						for (AID aid : a.lights) {
+							
 							request.addReceiver(aid);
 							request.setContent(msg.getContent());
 							request.setLanguage("mid");
 							myAgent.send(request);
-							}
-						});
-				} catch (FIPAException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-					
-					
-				
-				
-				
-				
-			}else if(recver.equals("climate")) {
+						}
+					}
+				});
+
+			} else if (recver.equals("climate")) {
 				myAgent.addBehaviour(new OneShotBehaviour() {
 					@Override
 					public void action() {
 						// TODO Auto-generated method stub
 						System.out.println("climate detected");
-					
+
 					}
 				});
-			}else {
+			} else {
 				myAgent.addBehaviour(new OneShotBehaviour() {
 					@Override
 					public void action() {
-					// TODO Auto-generated method stub
+						// TODO Auto-generated method stub
 						System.out.println("weather detected");
 					}
 				});
 			}
-		}
-		else {
+		} else {
 			block();
 		}
-		
-		
-		
+
 	}
 }

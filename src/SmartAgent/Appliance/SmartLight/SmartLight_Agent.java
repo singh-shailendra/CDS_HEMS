@@ -13,9 +13,11 @@ import jade.lang.acl.MessageTemplate;
 
 public class SmartLight_Agent extends Agent {
 	private ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
-	private static final Integer low = 0;
-	private static final Integer mid = 1;
-	private static final Integer high = 2;
+	private static final String low = "low";
+	private static final String mid = "mid";
+	private static final String high = "high";
+	
+	private static String mode = mid;
 	
 	@Override
 	public void setup() {
@@ -31,7 +33,7 @@ public class SmartLight_Agent extends Agent {
 	
 		try {
 			DFService.register(this, dfd);
-			Behaviour recv = new ExecuteReceiver(this);
+			Behaviour recv = new Executor(this);
 			addBehaviour(recv);
 		
 		} catch (FIPAException e) {

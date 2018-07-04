@@ -9,7 +9,7 @@ public class AppReceiver extends CyclicBehaviour{
 	public AppReceiver(Agent a) {
 		// TODO Auto-generated constructor stub
 		super(a);
-		
+		System.out.println("App receiver is running..");
 	}
 	
 	@Override
