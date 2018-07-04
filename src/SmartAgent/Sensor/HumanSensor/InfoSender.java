@@ -12,8 +12,7 @@ import jade.lang.acl.ACLMessage;
 public class InfoSender extends OneShotBehaviour {
 	private Integer state = 0;
 	private Boolean pre;
-	private DFAgentDescription template = new DFAgentDescription();
-	private ServiceDescription sd = new ServiceDescription();
+	
 	private AID aid;
 
 	public InfoSender(Agent a, Boolean pre) {
@@ -23,16 +22,19 @@ public class InfoSender extends OneShotBehaviour {
 		this.pre = pre;
 	}
 
-	public void recvSet() {
-
+	public AID getAID() {
+		AID aid = null;
 		try {
+			DFAgentDescription template = new DFAgentDescription();
+			ServiceDescription sd = new ServiceDescription();
 			sd.setType("Data_Analysis_Agent");
 			template.addServices(sd);
-			this.aid = DFService.search(myAgent, template)[0].getName();
+			aid = DFService.search(myAgent, template)[0].getName();
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return aid;
 	}
 
 	@Override
@@ -42,8 +44,9 @@ public class InfoSender extends OneShotBehaviour {
 
 		// sd.setType("Data_Analysis_Agent");
 
-		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-		msg.addReceiver(new AID("da", AID.ISLOCALNAME));
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+//		msg.addReceiver(new AID("da", AID.ISLOCALNAME));
+		msg.addReceiver(getAID());
 		msg.setOntology("sensor");
 		msg.setInReplyTo("human");
 		// msg.setLanguage("mid");

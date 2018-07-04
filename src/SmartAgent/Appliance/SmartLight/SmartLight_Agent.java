@@ -16,29 +16,40 @@ public class SmartLight_Agent extends Agent {
 	private static final String low = "low";
 	private static final String mid = "mid";
 	private static final String high = "high";
-	
 	private static String mode = mid;
-	
+
 	@Override
 	public void setup() {
 		DFAgentDescription dfd = new DFAgentDescription();
-		ServiceDescription sd = new ServiceDescription();   
-		sd.setType("SmartLight_Agent"); 
-		sd.setName(getName());
-		sd.setOwnership("Project_Group_5");
 		dfd.setName(getAID());
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType("SmartLight_Agent");
+		sd.setName("JADE-SmartLight-Agent");
+		// sd.setOwnership("Project_Group_5");
+		
 		dfd.addServices(sd);
-		
-		
-	
+
 		try {
 			DFService.register(this, dfd);
-			Behaviour recv = new Executor(this);
-			addBehaviour(recv);
-		
+			System.out.println(getName()+" registed");
+			addBehaviour(tbf.wrap(new Executor(this)));
+
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
+
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void takeDown() {
+		// TODO Auto-generated method stub
+		try {
+			tbf.interrupt();
+			DFService.deregister(this);
+			
+		} catch (FIPAException fe) {
+			fe.printStackTrace();
 		}
 	}
 }

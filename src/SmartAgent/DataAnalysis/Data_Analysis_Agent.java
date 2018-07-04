@@ -3,7 +3,6 @@ package SmartAgent.DataAnalysis;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.ThreadedBehaviourFactory;
-import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -30,9 +29,9 @@ public class Data_Analysis_Agent extends Agent{
 		dfd.addServices(sd);
 		addBehaviour(tbf.wrap(new SensorReceiver(this))); //responder for sensor
 		
-		addBehaviour(tbf.wrap(new AppReceiver(this)));
-		
-		addBehaviour(tbf.wrap(new UoTReceiver(this)));
+//		addBehaviour(tbf.wrap(new AppReceiver(this)));
+//		
+//		addBehaviour(tbf.wrap(new UoTReceiver(this)));
 		
 		try {
 			DFService.register(this, dfd);
@@ -44,15 +43,14 @@ public class Data_Analysis_Agent extends Agent{
 		}
 	}
 	
-	public void predict(){
-		
-	}
-	
-	public void solutin(){
-		
-	}
-	
-	public AID[] getLights(){
-		return lights;
+	@Override
+	protected void takeDown() {
+		// TODO Auto-generated method stub
+		try {
+			DFService.deregister(this);
+			tbf.interrupt();
+		} catch (FIPAException e) {
+			// TODO: handle exception
+		}
 	}
 }
