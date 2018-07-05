@@ -51,10 +51,14 @@ public class Predition {
 			this.curCost += (-1)* unit * period;
 		}
 	}
-
-	public Boolean isOverbudget(String app, String mode, Boolean add) {
+	public Integer getUnit(String app, String mode) {
 		Map<String, Integer> _app = (Map<String,Integer>)consump.get(app);
-		Integer unit = (Integer)_app.get(mode);
+		return (Integer)_app.get(mode);
+	}
+	public Boolean isOverbudget(String app, String mode, Boolean add) {
+//		Map<String, Integer> _app = (Map<String,Integer>)consump.get(app);
+//		Integer unit = (Integer)_app.get(mode);
+		Integer unit = this.getUnit(app, mode);
 		synchronized(this.curCost){
 			setCurrCost(unit, add);
 		}

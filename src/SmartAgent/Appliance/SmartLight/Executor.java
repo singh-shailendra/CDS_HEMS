@@ -6,33 +6,39 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class Executor extends CyclicBehaviour{
+public class Executor extends CyclicBehaviour {
 	private static MessageTemplate mt = MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST)
-													   .MatchPerformative(ACLMessage.REQUEST)
-													   .MatchOntology("da");
+			.MatchPerformative(ACLMessage.REQUEST).MatchOntology("da");
+
 	public Executor(Agent a) {
 		// TODO Auto-generated constructor stub
 		super(a);
 	}
-	 @Override
+
+	@Override
 	public void action() {
 		// TODO Auto-generated method stub
 		ACLMessage msg = myAgent.receive(mt);
-		if(msg!=null){
-			if(msg.getContent().equals("on")) {
-				System.out.println(myAgent.getLocalName()+" light is successfully turned on");
-				System.out.println(myAgent.getLocalName()+" light is running on " +msg.getLanguage()+" mode");
+		if (msg != null) {
+			ACLMessage reply = msg.createReply();
+			reply.setOntology("SmartLight");
+			if (msg.getContent().equals("on")) {
+				System.out.println(myAgent.getLocalName() + " light is successfully turned on");
+				System.out.println(myAgent.getLocalName() + " light is running on " + msg.getLanguage() + " mode");
+
+				reply.setContent("on");
+
 				SmartLight_Agent.mode = msg.getLanguage();
-				if(msg.getEncoding().equals("overbudget")) {
+				if (msg.getEncoding().equals("overbudget")) {
 					myAgent.addBehaviour(new Optimizer(myAgent));
-//					System.out.println("optimizer");
+					// System.out.println("optimizer");
 				}
+			} else {
+				System.out.println(myAgent.getLocalName() + " light is successfully turned off");
+				reply.setContent("off");
 			}
-			else {
-				System.out.println(myAgent.getLocalName()+" light is successfully turned off");
-			}
-		}
-		else{
+			myAgent.send(reply);
+		} else {
 			block();
 		}
 	}

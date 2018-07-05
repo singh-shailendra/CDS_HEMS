@@ -41,6 +41,7 @@ public class DR_Agent extends Agent {
 					ACLMessage reply = msg.createReply();
 					reply.setConversationId("optimization");
 					reply.setContent(new Random().nextBoolean()?"ok":"no");
+//					reply.setContent("ok");
 					myAgent.send(reply);
 				}
 				else {

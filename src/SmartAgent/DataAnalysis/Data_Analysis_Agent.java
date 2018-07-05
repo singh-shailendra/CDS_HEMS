@@ -18,7 +18,8 @@ public class Data_Analysis_Agent extends Agent {
 
 	public static Predition predition = new Predition();
 	
-	public static Map appliances = new HashMap<String, Boolean>();
+	public static Map appliances = new HashMap<String, String>();
+	
 
 	@Override
 	public void setup() {
@@ -32,7 +33,7 @@ public class Data_Analysis_Agent extends Agent {
 		dfd.setName(getAID());
 		dfd.addServices(sd);
 		addBehaviour(tbf.wrap(new SensorReceiver(this))); // responder for sensor
-
+		addBehaviour(tbf.wrap(new BudgetUpdater(this))); //responder for budget update
 		// addBehaviour(tbf.wrap(new AppReceiver(this)));
 		//
 		// addBehaviour(tbf.wrap(new UoTReceiver(this)));

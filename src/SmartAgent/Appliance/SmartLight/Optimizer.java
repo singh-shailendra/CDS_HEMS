@@ -11,7 +11,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class Optimizer extends Behaviour {
-	private int state = 0;
+	private int state = 2;
 	private MessageTemplate mt = MessageTemplate.MatchConversationId("optimization");
 	public Optimizer(Agent a) {
 		// TODO Auto-generated constructor stub
@@ -54,6 +54,7 @@ public class Optimizer extends Behaviour {
 			}
 			break;
 		case 2:
+			System.out.println("sending request for clean energy...");
 			ACLMessage dr = new ACLMessage(ACLMessage.CFP);
 			dr.addReceiver(this.getAID("DR_Agent"));
 			dr.setConversationId("optimization");
@@ -64,26 +65,41 @@ public class Optimizer extends Behaviour {
 			ACLMessage drReply = myAgent.receive(mt);
 			if(drReply!=null) {
 				if(drReply.getContent().equals("ok")) {
+					System.out.println("respond: clean energy available!");
+					System.out.println("sending update to Data_Analysis_Center...");
+					ACLMessage fb = new ACLMessage(ACLMessage.REQUEST);
+					fb.addReceiver(this.getAID("Data_Analysis_Agent"));
+					fb.setConversationId("budgetUpdate");
+					fb.setEncoding("false");
+					fb.setContent("light");
+					fb.setLanguage(SmartLight_Agent.mode);
+					myAgent.send(fb);
 					state = 4;
+					break;
 				}
 				else {
+					System.out.println("respond:clean energy not available!");
 					state = 5;
+					break;
 				}
 			}
 			break;
 		
 		case 4:
 			System.out.println("budget controlled");
-			
+			state = 6;
+			break;
 		
 		case 5:
 			System.out.println("still overbudget");
+			state = 6;
+			break;
 		}
 	}
 
 	@Override
 	public boolean done() {
 		// TODO Auto-generated method stub
-		return (state == 5 || state == 4);
+		return state == 6;
 	}
 }
