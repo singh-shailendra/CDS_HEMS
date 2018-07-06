@@ -6,7 +6,7 @@ import java.util.Map;
 public class Predition {
 
 	public static final Integer total = 200;
-	
+	public static final String off = "off";
 	public static final String low = "low";
 	
 	public static final String mid = "mid";

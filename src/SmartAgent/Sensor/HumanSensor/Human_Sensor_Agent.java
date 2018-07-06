@@ -30,8 +30,8 @@ public class Human_Sensor_Agent extends Agent {
 		try {
 			DFService.register(this, dfd);
 			SensorSetup();
-			// Behaviour recv = new InfoReceiver(this);
-			// addBehaviour(tbf.wrap(recv));
+//			 Behaviour recv = new InfoReceiver(this);
+//			 addBehaviour(tbf.wrap(recv));
 			// addBehaviour(recv);
 
 		} catch (FIPAException e) {

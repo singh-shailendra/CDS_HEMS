@@ -1,15 +1,15 @@
 package SmartAgent.Appliance.SmartLight;
 
+import Util.AIDGetter;
+import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
-import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 
 public class SmartLight_Agent extends Agent {
 	private ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
@@ -31,7 +31,15 @@ public class SmartLight_Agent extends Agent {
 			DFService.register(this, dfd);
 			System.out.println(getName() + " registed");
 			addBehaviour(tbf.wrap(new Executor(this)));
-
+			addBehaviour(new OneShotBehaviour() {
+				@Override
+				public void action() {
+					ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+					msg.setOntology("appliance");
+					msg.addReceiver(new AIDGetter().getAID(this.myAgent, "Data_Analysis_Agent"));
+					send(msg);
+				}
+			});
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 

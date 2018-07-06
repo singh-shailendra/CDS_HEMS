@@ -17,7 +17,10 @@ public class UI_Agent extends Agent{
 		
 		@Override
 		public void setup() {
-			eventTrigger();
+//			eventTrigger();
+		
+			
+			
 
 		}
 		
