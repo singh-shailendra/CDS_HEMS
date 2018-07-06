@@ -45,6 +45,18 @@ public class HumanResponder extends Behaviour {
 //			System.out.println("step1");
 			if(reply!=null) {
 				System.out.println(aid.getName()+"-operation confirmed");
+				if(reply.getContent().equals("on")) {
+					Data_Analysis_Agent.appliances.put(reply.getSender().getName(), reply.getLanguage());
+					
+				}
+				else {
+					Data_Analysis_Agent.appliances.put(reply.getSender().getName(), Predition.off);
+					
+				}
+				System.out.println(reply.getSender().getName()+":"+ 
+							Data_Analysis_Agent.appliances.get(reply.getSender().getName()));
+				System.out.println(Data_Analysis_Agent.appliances.size());
+				
 				step++;
 				break;
 			}

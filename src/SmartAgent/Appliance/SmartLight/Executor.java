@@ -22,6 +22,7 @@ public class Executor extends CyclicBehaviour {
 		if (msg != null) {
 			ACLMessage reply = msg.createReply();
 			reply.setOntology("SmartLight");
+			reply.setLanguage(SmartLight_Agent.mode);
 			if (msg.getContent().equals("on")) {
 				System.out.println(myAgent.getLocalName() + " light is successfully turned on");
 				System.out.println(myAgent.getLocalName() + " light is running on " + msg.getLanguage() + " mode");

@@ -21,7 +21,11 @@ public class AppReceiver extends CyclicBehaviour{
 		if(msg != null) {
 			Data_Analysis_Agent.appliances.put(msg.getSender().getName(), Predition.off);
 			
-			System.out.println(Data_Analysis_Agent.appliances.get(msg.getSender().getName()));
+			System.out.println("appliances: "+msg.getSender().getName()+
+								"registered in"+
+							Data_Analysis_Agent.appliances.get(msg.getSender().getName())
+								+"mode");
+			
 		}else {
 			block();
 		}
