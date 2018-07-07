@@ -10,6 +10,13 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SpringLayout;
+import net.miginfocom.swing.MigLayout;
+import java.awt.CardLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.layout.FormSpecs;
 
 public class jframe extends JFrame {
 
@@ -40,15 +47,27 @@ public class jframe extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnNewButton = new JButton("New button");
+		JButton btnNewButton = new JButton("bt");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("fuckyou");
+				JButton jb = new JButton("bt");
+				contentPane.add(jb);
+				contentPane.validate();
+				contentPane.repaint();
+				new frame2().setVisible(true);
 			}
 		});
-		contentPane.add(btnNewButton, BorderLayout.WEST);
+		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		contentPane.add(btnNewButton);
+		
+	
 	}
-
+	
+	class frame2 extends JFrame{
+		public frame2() {
+			setSize(300,300);
+			setVisible(false);
+		}
+	}
 }
