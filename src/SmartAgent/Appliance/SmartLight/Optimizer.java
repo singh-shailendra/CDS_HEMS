@@ -36,7 +36,7 @@ public class Optimizer extends Behaviour {
 		// TODO Auto-generated method stub
 		switch (state) {
 		case 0:
-			ACLMessage msg = new ACLMessage(ACLMessage.CFP);
+			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 			msg.addReceiver(this.getAID("Airconditioner_Agent"));
 			msg.setConversationId("optimization");
 			myAgent.send(msg);
@@ -45,7 +45,7 @@ public class Optimizer extends Behaviour {
 		case 1:
 			ACLMessage recv = myAgent.receive(mt);
 			if(recv!=null) {
-				if(recv.getContent().equals("ok")) {
+				if(recv.getContent().equals("agree")) {
 					state = 4;
 				}
 			}

@@ -7,6 +7,7 @@ public class Predition {
 
 	public static final Integer total = 200;
 	public static final String off = "off";
+	
 	public static final String low = "low";
 	
 	public static final String mid = "mid";
@@ -34,6 +35,7 @@ public class Predition {
 		air.put("low", 80);
 		air.put("mid", 100);
 		air.put("high", 120);
+		air.put("humid", 100);
 		
 		consump.put(this.light, light);
 		consump.put(this.airconditioner, air);
