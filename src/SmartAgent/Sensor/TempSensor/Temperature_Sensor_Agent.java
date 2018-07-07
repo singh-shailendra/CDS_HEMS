@@ -1,4 +1,5 @@
 package SmartAgent.Sensor.TempSensor;
+
 import java.util.Random;
 import jade.core.*;
 import jade.core.behaviours.*;
