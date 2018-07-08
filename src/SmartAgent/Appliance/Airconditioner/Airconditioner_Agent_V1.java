@@ -26,7 +26,7 @@ import java.util.Vector;
  * "temperature" within the content then it replies with an INFORM message whose 
  * content will have current temperature 
  */
-public class Airconditioner_Agent  extends Agent {
+public class Airconditioner_Agent_V1  extends Agent {
 
 	protected void setup() {
 		// Registration with the DF 
