@@ -22,7 +22,7 @@ public class SmartLight_Agent extends Agent {
 		dfd.setName(getAID());
 		ServiceDescription sd = new ServiceDescription();
 		sd.setType("SmartLight_Agent");
-		sd.setName("JADE-SmartLight-Agent");
+		sd.setName("JADE-Agent");
 		sd.setOwnership("Project_Group_5");
 		System.out.println(getAID().getName());
 		dfd.addServices(sd);
@@ -31,6 +31,8 @@ public class SmartLight_Agent extends Agent {
 			DFService.register(this, dfd);
 			System.out.println(getName() + " registed");
 			addBehaviour(tbf.wrap(new Executor(this)));
+			addBehaviour(tbf.wrap(new UIResponder(this)));
+			addBehaviour(tbf.wrap(new OptimizerTrigger(this)));
 			addBehaviour(new OneShotBehaviour() {
 				@Override
 				public void action() {
@@ -40,6 +42,7 @@ public class SmartLight_Agent extends Agent {
 					send(msg);
 				}
 			});
+			
 		} catch (FIPAException e) {
 			// TODO Auto-generated catch block
 

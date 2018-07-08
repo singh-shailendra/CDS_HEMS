@@ -5,7 +5,8 @@ import java.util.Map;
 
 public class Predition {
 
-	public static final Integer total = 200;
+	public static final Integer total = 400;
+	
 	public static final String off = "off";
 	
 	public static final String low = "low";
@@ -13,6 +14,8 @@ public class Predition {
 	public static final String mid = "mid";
 	
 	public static final String high = "high";
+	
+	public static final String humid = "humid";
 	
 	public static final String airconditioner = "air";
 	
@@ -30,12 +33,14 @@ public class Predition {
 		light.put("low", 40);
 		light.put("mid", 50);
 		light.put("high", 60);
+		light.put("off", 0);
 		
 		Map air = new HashMap<String, Integer>();
 		air.put("low", 80);
 		air.put("mid", 100);
 		air.put("high", 120);
 		air.put("humid", 100);
+		air.put("off", 0);
 		
 		consump.put(this.light, light);
 		consump.put(this.airconditioner, air);

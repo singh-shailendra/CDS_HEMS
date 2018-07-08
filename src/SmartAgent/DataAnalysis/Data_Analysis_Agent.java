@@ -32,10 +32,10 @@ public class Data_Analysis_Agent extends Agent {
 		sd.setOwnership("Project_Group_5");
 		dfd.setName(getAID());
 		dfd.addServices(sd);
-		addBehaviour(tbf.wrap(new SensorReceiver(this))); // responder for sensor
+		addBehaviour(tbf.wrap(new HumanResponder(this))); // responder for sensor
 		addBehaviour(tbf.wrap(new BudgetUpdater(this))); //responder for budget update
 		addBehaviour(tbf.wrap(new AppReceiver(this))); 
-		//
+		addBehaviour(tbf.wrap(new ClimateResponder(this)));
 		// addBehaviour(tbf.wrap(new UoTReceiver(this)));
 
 		try {

@@ -1,1 +1,1 @@
-http://DESKTOP-CBFHND7.uwo-x-10.wireless.uwo.pri:7778/acc
+http://DESKTOP-CBFHND7:7778/acc

@@ -11,7 +11,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class Optimizer extends Behaviour {
-	private int state = 2;
+	private int state = 0;
 	private MessageTemplate mt = MessageTemplate.MatchConversationId("optimization");
 	public Optimizer(Agent a) {
 		// TODO Auto-generated constructor stub
@@ -36,6 +36,7 @@ public class Optimizer extends Behaviour {
 		// TODO Auto-generated method stub
 		switch (state) {
 		case 0:
+			System.out.println("sending request to other appliances");
 			ACLMessage msg = new ACLMessage(ACLMessage.CFP);
 			msg.addReceiver(this.getAID("Airconditioner_Agent"));
 			msg.setConversationId("optimization");
@@ -45,12 +46,22 @@ public class Optimizer extends Behaviour {
 		case 1:
 			ACLMessage recv = myAgent.receive(mt);
 			if(recv!=null) {
-				if(recv.getContent().equals(ACLMessage.AGREE)) {
+				if(recv.getContent().equals("agree")) {
+					System.out.println("appliance shutted down");
+					ACLMessage fb = new ACLMessage(ACLMessage.REQUEST);
+					fb.addReceiver(this.getAID("Data_Analysis_Agent"));
+					fb.setConversationId("budgetUpdate");
+					fb.setEncoding("false");
+					fb.setContent("air");
+					fb.setLanguage("humid");
+					myAgent.send(fb);
 					state = 4;
 				}
+				else {
+					
+					state++;
 			}
-			else {
-				state++;
+			
 			}
 			break;
 		case 2:

@@ -1,5 +1,6 @@
 package SmartAgent.DataAnalysis;
 
+import Util.AIDGetter;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -22,10 +23,14 @@ public class AppReceiver extends CyclicBehaviour{
 			Data_Analysis_Agent.appliances.put(msg.getSender().getName(), Predition.off);
 			
 			System.out.println("appliances: "+msg.getSender().getName()+
-								"registered in"+
+								"registered on "+
 							Data_Analysis_Agent.appliances.get(msg.getSender().getName())
-								+"mode");
+								+" mode");
 			
+//			ACLMessage send = new ACLMessage(ACLMessage.REQUEST);
+//			msg.addReceiver(new AIDGetter().getAID(myAgent, "UI_Agent"));
+//			msg.setOntology("agent");
+//			myAgent.send(msg);
 		}else {
 			block();
 		}

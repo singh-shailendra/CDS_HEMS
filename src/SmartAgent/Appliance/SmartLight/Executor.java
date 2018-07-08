@@ -1,5 +1,6 @@
 package SmartAgent.Appliance.SmartLight;
 
+import Util.AIDGetter;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.FIPANames;
@@ -20,7 +21,9 @@ public class Executor extends CyclicBehaviour {
 		// TODO Auto-generated method stub
 		ACLMessage msg = myAgent.receive(mt);
 		if (msg != null) {
-			ACLMessage reply = msg.createReply();
+//			ACLMessage reply = msg.createReply();
+			ACLMessage reply = new ACLMessage(ACLMessage.REQUEST);
+			reply.addReceiver(new AIDGetter().getAID(myAgent, "Data_Analysis_Agent"));
 			reply.setOntology("SmartLight");
 			reply.setLanguage(SmartLight_Agent.mode);
 			if (msg.getContent().equals("on")) {
@@ -30,10 +33,11 @@ public class Executor extends CyclicBehaviour {
 				reply.setContent("on");
 				
 				SmartLight_Agent.mode = msg.getLanguage();
-				if (msg.getEncoding().equals("overbudget")) {
-					myAgent.addBehaviour(new Optimizer(myAgent));
-					// System.out.println("optimizer");
-				}
+//				if (msg.getEncoding().equals("overbudget")) {
+//					
+//					myAgent.addBehaviour(new Optimizer(myAgent));
+//		
+//				}
 			} else {
 				System.out.println(myAgent.getLocalName() + " light is successfully turned off");
 				reply.setContent("off");

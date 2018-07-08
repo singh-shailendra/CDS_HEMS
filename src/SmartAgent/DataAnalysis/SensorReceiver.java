@@ -66,7 +66,7 @@ public class SensorReceiver extends CyclicBehaviour {
 
 					try {
 						Thread.currentThread().sleep(3000);
-						myAgent.addBehaviour(new HumanResponder(myAgent, aid, msg, request));
+//						myAgent.addBehaviour(new HumanResponder(myAgent, aid, msg, request));
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
