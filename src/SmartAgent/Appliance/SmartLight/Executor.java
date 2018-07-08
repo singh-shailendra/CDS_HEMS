@@ -28,7 +28,7 @@ public class Executor extends CyclicBehaviour {
 				System.out.println(myAgent.getLocalName() + " light is running on " + msg.getLanguage() + " mode");
 
 				reply.setContent("on");
-
+				
 				SmartLight_Agent.mode = msg.getLanguage();
 				if (msg.getEncoding().equals("overbudget")) {
 					myAgent.addBehaviour(new Optimizer(myAgent));
