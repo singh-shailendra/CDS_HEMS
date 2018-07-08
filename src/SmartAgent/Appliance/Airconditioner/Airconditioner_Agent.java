@@ -39,7 +39,7 @@ public class Airconditioner_Agent  extends Agent {
 					ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 					msg.setOntology("appliance");
 					msg.addReceiver(new AID((String) "Data_Analysis_Agent", AID.ISLOCALNAME));
-					msg.setContent("mid");
+//					msg.setContent("mid");
 					System.out.println("Agent "+ myAgent.getLocalName() + ": operating mode: mid" );
 					send(msg);
 				}
