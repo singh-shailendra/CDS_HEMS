@@ -3,90 +3,97 @@ package SmartAgent.Appliance.Airconditioner;
 import java.util.Random;
 import jade.core.*;
 import jade.core.behaviours.*;
-import jade.lang.acl.ACLMessage;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.core.AID;
+import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.ThreadedBehaviourFactory;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
-import jade.proto.AchieveREInitiator;
-import jade.domain.FIPANames;
-import jade.lang.acl.MessageTemplate;
-import jade.proto.AchieveREResponder;
-import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPAAgentManagement.RefuseException;
-import jade.domain.FIPAAgentManagement.FailureException;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.lang.acl.ACLMessage;
 
-import java.util.Date;
-import java.util.Vector;
-
-
-/**
- * This agent implements function of a temperature sensor. 
- * It Wait for ACLMessages, if  a REQUEST message is received containing the string 
- * "temperature" within the content then it replies with an INFORM message whose 
- * content will have current temperature 
- */
 public class Airconditioner_Agent  extends Agent {
+	private ThreadedBehaviourFactory tbf = new ThreadedBehaviourFactory();
 
-	protected void setup() {
-		// Registration with the DF 
+	public static String mode = "mid";
+
+	@Override
+	public void setup() {
 		DFAgentDescription dfd = new DFAgentDescription();
-		ServiceDescription sd = new ServiceDescription();   
-		sd.setType("Airconditioner_Agent"); 
-		sd.setName(getName());
-		sd.setOwnership("Project_Group_5");
 		dfd.setName(getAID());
+		ServiceDescription sd = new ServiceDescription();
+		sd.setType("Airconditioner_Agent");
+		sd.setName("JADE-Airconditioner-Agent");
+		sd.setOwnership("Project_Group_5");
+		System.out.println(getAID().getName());
 		dfd.addServices(sd);
+		
 		try {
-				DFService.register(this, dfd);
-			  	System.out.println("Agent: "+getLocalName()+" waiting for requests...");
-			  	MessageTemplate template = MessageTemplate.and(
-		  		MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_REQUEST),
-		  		MessageTemplate.MatchPerformative(ACLMessage.REQUEST) );
-			  		
-				addBehaviour(new AchieveREResponder(this, template) {
-					protected ACLMessage prepareResponse(ACLMessage request) throws NotUnderstoodException, RefuseException {
-						System.out.println("Agent: "+getLocalName()+": REQUEST received from "+request.getSender().getName()+". Action is "+request.getContent());
+			DFService.register(this, dfd);
+			System.out.println(getName() + " registed");
+			addBehaviour(tbf.wrap(new Receiver(this)));
+			addBehaviour(new OneShotBehaviour() {
+				@Override
+				public void action() {
+					ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+					msg.setOntology("appliance");
+					msg.addReceiver(new AID((String) "Data_Analysis_Agent", AID.ISLOCALNAME));
+					msg.setContent("mid");
+					System.out.println("Agent "+ myAgent.getLocalName() + ": operating mode: mid" );
+					send(msg);
+				}
+			});
+			addBehaviour(new TickerBehaviour(this, 6000) {
+			    protected void onTick() {
+					// TODO Auto-generated method stub
 						Random r = new Random();
 						int Low = 1;
 						int High = 999;
 						int Result = r.nextInt(High-Low) + Low;
-						if (Result % 3 == 0){
-							// We agree to perform the action. Note that in the FIPA-Request
-							// protocol the AGREE message is optional. Return null if you
-							// don't want to send it.
-							System.out.println("Agent: "+getLocalName()+": Agree!");
-							ACLMessage agree = request.createReply();
-							agree.setPerformative(ACLMessage.AGREE);
-							return agree;
+						ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+						msg.setOntology("appliance");
+						msg.addReceiver(new AID((String) "Data_Analysis_Agent", AID.ISLOCALNAME));
+						if (Result % 2 == 0){
+							//humid mode
+							msg.setContent("humid");
+							System.out.println("Agent "+ myAgent.getLocalName() + ": operating mode: humid" );
+						}
+						else if((Result % 3 == 0)) {
+							//mid
+							msg.setContent("mid");
+							System.out.println("Agent "+ myAgent.getLocalName() + ": operating mode: mid" );
+						}
+						else if((Result % 5 == 0)) {
+							//high
+							msg.setContent("mid");
+							System.out.println("Agent "+ myAgent.getLocalName() + ": operating mode: high" );
 						}
 						else {
-							// We refuse to perform the action
-							System.out.println("Agent: "+getLocalName()+": Refuse!");
-							throw new RefuseException("check-failed");
+							//low
+							msg.setContent("mid");
+							System.out.println("Agent "+ myAgent.getLocalName() + ": operating mode: low" );
 						}
+						myAgent.send(msg);
 					}
-						
-					protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
-						Random r = new Random();
-						int Low = 1;
-						int High = 999;
-						int Result = r.nextInt(High-Low) + Low;
-						if (Result % 3 == 0){
-							System.out.println("Agent: "+getLocalName()+": Action successfully performed!");
-							ACLMessage inform = request.createReply();
-							inform.setPerformative(ACLMessage.INFORM);
-							return inform;
-						}
-						else {
-							System.out.println("Agent: "+getLocalName()+": Action failed!");
-							throw new FailureException("unexpected-error");
-						}	
-					}
-				} 
-			);
+				});
+			
 		} catch (FIPAException e) {
-			doDelete();
+			// TODO Auto-generated catch block
+
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void takeDown() {
+		// TODO Auto-generated method stub
+		try {
+			tbf.interrupt();
+			DFService.deregister(this);
+
+		} catch (FIPAException fe) {
+			fe.printStackTrace();
 		}
 	}
 }
