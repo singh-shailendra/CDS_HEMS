@@ -42,7 +42,8 @@ public class HumanResponder extends CyclicBehaviour {
 		ACLMessage reply = myAgent.receive(mt);
 		// System.out.println("step1");
 		if (reply != null) {
-			if (Data_Analysis_Agent.appliances.get(reply.getSender().getName()) != reply.getLanguage()) {
+			
+			if (!Data_Analysis_Agent.appliances.get(reply.getSender().getName()).equals(reply.getLanguage())) {
 				System.out.println(reply.getSender().getLocalName() + "-operation confirmed");
 				Predition p = Data_Analysis_Agent.predition;
 				p.setCurrCost(p.getUnit(Predition.light, (String)Data_Analysis_Agent.appliances.get(reply.getSender().getName())), false);
@@ -61,6 +62,7 @@ public class HumanResponder extends CyclicBehaviour {
 					myAgent.send(request);
 				} else {
 					Data_Analysis_Agent.appliances.put(reply.getSender().getName(), Predition.off);
+					System.out.println("The current budget is "+ p.getCurrCost()+ "$");
 
 				}
 			}
@@ -68,7 +70,7 @@ public class HumanResponder extends CyclicBehaviour {
 					+ Data_Analysis_Agent.appliances.get(reply.getSender().getName()));
 			// System.out.println(Data_Analysis_Agent.appliances.size());
 
-			// } else {
+			// } else {r
 			// request.setEncoding("underbudget");
 			// }
 			// step++;

@@ -28,7 +28,9 @@ public class BudgetUpdater extends CyclicBehaviour{
 			}
 			Predition p = Data_Analysis_Agent.predition;
 			p.setCurrCost(p.getUnit(app, msg.getLanguage()), add);
+			Data_Analysis_Agent.appliances.put(msg.getSender().getName(), msg.getLanguage());
 			System.out.println("budgetUpdate success!current cost is: "+p.getCurrCost()+"$");
+			System.out.println(" ");
 		}
 		else {
 			block();

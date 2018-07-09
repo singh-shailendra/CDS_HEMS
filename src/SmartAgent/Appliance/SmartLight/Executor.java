@@ -25,14 +25,14 @@ public class Executor extends CyclicBehaviour {
 			ACLMessage reply = new ACLMessage(ACLMessage.REQUEST);
 			reply.addReceiver(new AIDGetter().getAID(myAgent, "Data_Analysis_Agent"));
 			reply.setOntology("SmartLight");
-			reply.setLanguage(SmartLight_Agent.mode);
+			reply.setLanguage(msg.getLanguage());
 			if (msg.getContent().equals("on")) {
 				System.out.println(myAgent.getLocalName() + " light is successfully turned on");
 				System.out.println(myAgent.getLocalName() + " light is running on " + msg.getLanguage() + " mode");
 
 				reply.setContent("on");
 				
-				SmartLight_Agent.mode = msg.getLanguage();
+				
 //				if (msg.getEncoding().equals("overbudget")) {
 //					
 //					myAgent.addBehaviour(new Optimizer(myAgent));
@@ -42,6 +42,7 @@ public class Executor extends CyclicBehaviour {
 				System.out.println(myAgent.getLocalName() + " light is successfully turned off");
 				reply.setContent("off");
 			}
+			SmartLight_Agent.mode = msg.getLanguage();
 			myAgent.send(reply);
 		} else {
 			block();
