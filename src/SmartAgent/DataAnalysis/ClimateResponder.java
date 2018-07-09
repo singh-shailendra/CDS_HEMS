@@ -19,6 +19,9 @@ public class ClimateResponder extends CyclicBehaviour{
 		ACLMessage msg = myAgent.receive(mt);
 		if(msg != null) {
 			Data_Analysis_Agent.predition.isOverbudget(Predition.airconditioner, Predition.humid, true);
+			ACLMessage reply = msg.createReply();
+			reply.setPerformative(ACLMessage.INFORM);
+			myAgent.send(reply);
 		}
 		else {
 			block();

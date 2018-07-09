@@ -23,10 +23,12 @@ public class AppReceiver extends CyclicBehaviour{
 			Data_Analysis_Agent.appliances.put(msg.getSender().getName(), Predition.off);
 			
 			System.out.println("appliances: "+msg.getSender().getName()+
-								"registered on "+
+								" registered on "+
 							Data_Analysis_Agent.appliances.get(msg.getSender().getName())
 								+" mode");
-			
+			ACLMessage reply = msg.createReply();
+			reply.setPerformative(ACLMessage.INFORM);
+			myAgent.send(reply);
 //			ACLMessage send = new ACLMessage(ACLMessage.REQUEST);
 //			msg.addReceiver(new AIDGetter().getAID(myAgent, "UI_Agent"));
 //			msg.setOntology("agent");
