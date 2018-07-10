@@ -26,7 +26,7 @@ public class SmartLight_Agent extends Agent {
 		sd.setOwnership("Project_Group_5");
 		System.out.println(getAID().getName());
 		dfd.addServices(sd);
-		
+		new AID("da", AID.ISLOCALNAME);
 		try {
 			DFService.register(this, dfd);
 			System.out.println(getName() + " registed");

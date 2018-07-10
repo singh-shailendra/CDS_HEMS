@@ -20,6 +20,7 @@ public class Executor extends CyclicBehaviour {
 	public void action() {
 		// TODO Auto-generated method stub
 		ACLMessage msg = myAgent.receive(mt);
+		myAgent.send(arg0);
 		if (msg != null) {
 //			ACLMessage reply = msg.createReply();
 			ACLMessage reply = new ACLMessage(ACLMessage.REQUEST);
@@ -29,7 +30,7 @@ public class Executor extends CyclicBehaviour {
 			if (msg.getContent().equals("on")) {
 				System.out.println(myAgent.getLocalName() + " light is successfully turned on");
 				System.out.println(myAgent.getLocalName() + " light is running on " + msg.getLanguage() + " mode");
-
+				
 				reply.setContent("on");
 				
 				
